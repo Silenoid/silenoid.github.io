@@ -1,12 +1,19 @@
 const scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
 
-//Renderer instantiation
+// Adjust resolution on windows resize
+window.addEventListener( 'resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize( window.innerWidth, window.innerHeight );
+}, false );
+
+// Renderer instantiation
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-//Camera and env
+// Camera and env
 camera.position.set(0, 0, 5);
 camera.lookAt(0, 0, 0);
 
@@ -16,7 +23,7 @@ const meshMat = new THREE.MeshBasicMaterial({color: 0x00ff00});
 const cube = new THREE.Mesh(geometry, meshMat);
 scene.add(cube);
 
-//Line shit
+// Line stuff
 const lineMat = new THREE.LineBasicMaterial({
     color:0x0000ff,
     linewidth: 1
@@ -30,14 +37,16 @@ const triangle = new THREE.BufferGeometry().setFromPoints(points);
 const line = new THREE.Line(triangle, lineMat);
 scene.add(line);
 
+var clock = new THREE.Clock()
+
+// Game loop callback
 animate();
-
-var camPosition = camera.position;
-
 function animate() {
+    var elapsedTime = clock.getElapsedTime();
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
-    cube.rotation.x += 0.003;
-    cube.rotation.y += 0.005;
-    camera.position.z += 0.01;
+    
+    cube.rotation.x = Math.sin(elapsedTime * 0.3);
+    cube.rotation.y = Math.cos(elapsedTime * 0.5);
+    camera.position.z = 10+ Math.sin(elapsedTime * 0.1 + 178);
 }
