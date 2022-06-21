@@ -1,3 +1,9 @@
+const colors = {
+    dark: 0x2D2D2A,
+    accent: 0xD82AD8,
+    secondary: 0x28C9E2
+}
+
 const scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
 
@@ -10,6 +16,7 @@ window.addEventListener( 'resize', () => {
 
 // Renderer instantiation
 const renderer = new THREE.WebGLRenderer();
+renderer.setClearColor(colors.dark);
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
@@ -17,16 +24,15 @@ document.body.appendChild(renderer.domElement);
 camera.position.set(0, 0, 5);
 camera.lookAt(0, 0, 0);
 
-//Cube
+// Cube
 const geometry = new THREE.BoxGeometry();
-const meshMat = new THREE.MeshBasicMaterial({color: 0x00ff00});
+const meshMat = new THREE.MeshBasicMaterial({color: colors.secondary});
 const cube = new THREE.Mesh(geometry, meshMat);
 scene.add(cube);
 
 // Line stuff
 const lineMat = new THREE.LineBasicMaterial({
-    color:0x0000ff,
-    linewidth: 1
+    color: colors.accent,
 });
 const points = [];
 points.push(new THREE.Vector3(-1, 0, 0));
@@ -48,5 +54,6 @@ function animate() {
     
     cube.rotation.x = Math.sin(elapsedTime * 0.3);
     cube.rotation.y = Math.cos(elapsedTime * 0.5);
-    camera.position.z = 10+ Math.sin(elapsedTime * 0.1 + 178);
+    cube.rotation.z = Math.sin(elapsedTime * 0.7);
+    camera.position.z = 10 + 3 * Math.sin(elapsedTime + 178);
 }

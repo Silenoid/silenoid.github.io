@@ -1,1 +1,17 @@
+:root {
+    --dark: #2D2D2A;
+    --accent: #D82AD8;
+    --secondary: #28C9E2;
+}
+
 body { margin: 0; }
+
+#info {
+	position: absolute;
+	top: 10px;
+	width: 100%;
+	text-align: center;
+	z-index: 100;
+	display:block;
+    color: var(--secondary);
+}
