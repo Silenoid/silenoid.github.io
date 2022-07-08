@@ -4,9 +4,11 @@
     --secondary: #28C9E2;
 }
 
-body { margin: 0; }
+body { 
+	margin: 0;
+}
 
-#info {
+#pageContainer {
 	position: absolute;
 	top: 10px;
 	width: 100%;

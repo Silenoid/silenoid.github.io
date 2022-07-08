@@ -8,14 +8,12 @@ const scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
 
 // Adjust resolution on windows resize
-window.addEventListener( 'resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize( window.innerWidth, window.innerHeight );
-}, false );
+window.addEventListener('resize', resize, false);
 
 // Renderer instantiation
-const renderer = new THREE.WebGLRenderer();
+const renderer = new THREE.WebGLRenderer({
+    antialias: true
+});
 renderer.setClearColor(colors.dark);
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
@@ -26,8 +24,15 @@ camera.lookAt(0, 0, 0);
 
 // Cube
 const geometry = new THREE.BoxGeometry();
-const meshMat = new THREE.MeshBasicMaterial({color: colors.secondary});
-const cube = new THREE.Mesh(geometry, meshMat);
+const meshMat = new THREE.MeshBasicMaterial({
+    color: colors.secondary
+});
+const transparentMat= new THREE.MeshPhysicalMaterial({
+    roughness: 0.33,
+    transmission: 1,
+    thickness: 2
+});
+const cube = new THREE.Mesh(geometry, transparentMat);
 scene.add(cube);
 
 // Line stuff
@@ -47,11 +52,18 @@ var clock = new THREE.Clock()
 
 // Game loop callback
 animate();
+
+function resize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize( window.innerWidth, window.innerHeight );
+}
+
 function animate() {
     var elapsedTime = clock.getElapsedTime();
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
-    
+
     cube.rotation.x = Math.sin(elapsedTime * 0.3);
     cube.rotation.y = Math.cos(elapsedTime * 0.5);
     cube.rotation.z = Math.sin(elapsedTime * 0.7);
